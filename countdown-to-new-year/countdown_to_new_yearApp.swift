@@ -15,13 +15,18 @@ struct countdown_to_new_yearApp: App {
         MenuBarExtra {
             MenuView()
         } label: {
-            Text("\(timeManager.secondsUntilNewYear)")
+            if timeManager.isNewYear {
+                Text("Happy New Year")
+            } else {
+                Text("\(timeManager.secondsUntilNewYear)")
+            }
         }
     }
 }
 
 class TimeManager: ObservableObject {
     @Published var secondsUntilNewYear: Int = 0
+    @Published var isNewYear: Bool = false
     private var timer: Timer?
     
     init() {
@@ -46,7 +51,18 @@ class TimeManager: ObservableObject {
         components.second = 0
         
         if let newYear = calendar.date(from: components) {
-            secondsUntilNewYear = Int(newYear.timeIntervalSince(currentDate))
+            let timeInterval = newYear.timeIntervalSince(currentDate)
+            if timeInterval >= 31530000 {
+                // 新年になった場合
+                isNewYear = true
+                // 1時間後に再度カウントダウンを開始
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3600) {
+                    self.isNewYear = false
+                    self.updateTime()
+                }
+            } else {
+                secondsUntilNewYear = Int(timeInterval)
+            }
         }
     }
     
