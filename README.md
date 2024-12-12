@@ -1,6 +1,6 @@
-# Countdown to New Year
+# Countdown to New Year for macOS
 
-このアプリは、新年までのカウントダウンを表示するシンプルなmacOSアプリケーションです。
+このアプリは、新年までのカウントダウンをメニューバーに表示するシンプルなmacOSアプリケーションです。
 
 ## 機能
 
